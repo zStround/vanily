@@ -1,0 +1,4 @@
+main: com.github.vanily.currencies.CurrenciesPlugin
+name: currencies
+version: 1.0
+api-version: 1.21

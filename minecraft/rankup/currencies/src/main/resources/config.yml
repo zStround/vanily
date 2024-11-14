@@ -1,0 +1,9 @@
+currencies:
+  coins:
+    singular: "Coin"
+    plural: "Coins"
+    command: "coin"
+    icon: ""
+    color: ""
+    aliases:
+      - "coins"
