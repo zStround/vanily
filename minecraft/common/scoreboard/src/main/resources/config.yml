@@ -1,0 +1,12 @@
+scoreboard:
+  title: '§3§lLOGIN'
+  lines:
+    - ''
+    - ' §bRegistra-se:'
+    - ' §7/registrar'
+    - ''
+    - ' §bAutentica-se:'
+    - ' §7/logar'
+    - ''
+    - '§7§ovanily.net'
+  delay: 20

@@ -1,0 +1,5 @@
+main: com.github.vanily.essentials.EssentialsPlugin
+name: essentials
+version: 1.0
+api-version: 1.21
+depend: [ core ]

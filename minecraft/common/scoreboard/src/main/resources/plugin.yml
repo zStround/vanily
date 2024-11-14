@@ -1,0 +1,6 @@
+main: com.github.vanily.scoreboard.ScoreBoardPlugin
+name: scoreboard
+version: 1.0
+api-version: 1.21
+depend: [ core ]
+website: https://vanily.net/

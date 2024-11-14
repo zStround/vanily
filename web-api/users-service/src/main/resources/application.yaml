@@ -1,0 +1,11 @@
+server:
+  port: 8001
+
+spring:
+  application:
+    name: users-service
+
+keycloak:
+  realm: ${REALM_NAME}
+  client_id: ${CLIENT_ID}
+  client_secret: ${CLIENT_SECRET}
