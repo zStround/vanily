@@ -1,0 +1,99 @@
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_HOST_AUTH_METHOD: "trust"
+      POSTGRES_DB: ${POSTGRESQL_DATABASE}
+    networks:
+      - network
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+  redis:
+    image: redis
+    ports:
+      - "6379:6379"
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+  infra:
+    build: ./infra
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - network
+    env_file:
+      - .env
+    stdin_open: true
+    tty: true
+  currencies-service:
+    build: ./web-api/currencies-service
+    ports:
+      - "8002:8002"
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+  users-service:
+    build: ./web-api/users-service
+    ports:
+      - "8001:8001"
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+  keycloak:
+    image: keycloak/keycloak
+    command: ["start", "--import-realm"]
+    environment:
+      KC_HOSTNAME: localhost
+      KC_HOSTNAME_PORT: 8080
+      KC_HOSTNAME_STRICT_BACKCHANNEL: true
+      KC_HTTP_ENABLED: true
+      KC_HOSTNAME_STRICT_HTTPS: false
+      KC_HEALTH_ENABLED: true
+      KC_BOOTSTRAP_ADMIN_USERNAME: ${KEYCLOAK_ADMIN}
+      KC_BOOTSTRAP_ADMIN_PASSWORD: ${KEYCLOAK_ADMIN_PASSWORD}
+      KC_REALM_NAME: ${REALM_NAME}
+      KC_DB: postgres
+      KC_DB_URL: jdbc:postgresql://${POSTGRESQL_HOST}:${POSTGRESQL_PORT}/${POSTGRESQL_DATABASE}
+      KC_DB_USERNAME: ${POSTGRESQL_USERNAME}
+      KC_DB_PASSWORD: ${POSTGRESQL_PASSWORD}
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    ports:
+      - "8080:8080"
+    depends_on:
+      - postgres
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+    env_file:
+      - .env
+  proxy:
+    image: proxy
+    ports:
+      - "25565:25565"
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+  authentication:
+    image: authentication
+    networks:
+      - network
+    stdin_open: true
+    tty: true
+
+networks:
+  network:
+    driver: bridge
